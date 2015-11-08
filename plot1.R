@@ -1,0 +1,18 @@
+remove(list=ls())
+dev.off()
+library(dplyr)
+setwd("C:/Users/leef/Dropbox/Coursera_R_Stuff/Course_4_ExploratoryAnalysis/Project1")
+mydf <- read.csv("household_power_consumption.txt", header=TRUE, sep=";",
+                 stringsAsFactors=FALSE)
+mydf<-mutate(mydf, NewDate=as.Date(Date,"%d/%m/%Y"))
+mydf<-mutate(mydf, Year=as.numeric(substr(NewDate,start=1,stop=4)))
+mydf<-mutate(mydf, Month=as.numeric(substr(NewDate,start=6,stop=7)))
+mydf<-mutate(mydf, Day=as.numeric(substr(NewDate,start=9,stop=10)))
+mydf<-mutate(mydf, Hour=as.numeric(substr(Time,start=1,stop=2)))
+mydf<-mutate(mydf, Min=as.numeric(substr(Time,start=4,stop=5)))
+mydf<-filter(mydf,Year==2007 & Month == 2 & Day <3)
+Global_active_power<-as.numeric(mydf$Global_active_power)
+hist(Global_active_power, main = "Global Active Power",col="red",
+     xlab = "Global Active Power (kilowatts)")
+dev.copy(png,file="plot1.png")
+dev.off()
